@@ -26,7 +26,7 @@
     }
 
     .site-wrapper {
-      max-width: 900px;
+      max-width: 1000px;
       width: 100%;
       display: flex;
       flex-direction: column;
@@ -69,23 +69,26 @@
       border-radius: 4px;
     }
 
+    /* Modalità Desktop: 5 colonne per farli più piccoli e vederne di più */
     .gallery-grid {
-      column-count: 3;
-      column-gap: 20px;
+      column-count: 5;
+      column-gap: 15px;
     }
 
+    /* Modalità Telefono: 2 colonne affiancate */
     @media (max-width: 768px) {
       .gallery-grid {
-        column-count: 1;
+        column-count: 2;
+        column-gap: 10px;
       }
     }
 
     .gallery-item {
       break-inside: avoid;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       position: relative;
       overflow: hidden;
-      border-radius: 12px;
+      border-radius: 10px;
       cursor: pointer;
     }
 
@@ -215,11 +218,11 @@
 
     <header class="top-banner">
       <h1>MY STAMPS</h1>
-      <a href="https://seea-star.github.io/Cosmic-S-Home/" style="background:#F3EEDA; color:#111; border:2px solid #111; padding:8px 14px; border-radius:12px; font-weight:800; font-size:0.75rem; text-decoration:none; box-shadow:2px 2px 0px #111;">← HOME</a>
+      <a href="https://seea-star.github.io/Cosmic-S-Home/" style="background:#F3EEDA; color:#111; border:2px solid #111; padding:8px 14px; border-radius:12px; font-weight:800; font-size:0.75rem; text-decoration:none; box-shadow:2px 2px 0px #111;">HOME</a>
     </header>
 
     <div class="gallery-scroll-area">
-      <!-- La griglia si riempie automaticamente da sola tramite JavaScript -->
+      <!-- La griglia si riempie automaticamente tramite JavaScript -->
       <div class="gallery-grid" id="stampsGrid"></div>
     </div>
 
@@ -234,22 +237,22 @@
       </div>
       <div class="modal-right">
         <h3 id="modalTitle">Stamp Details</h3>
-        <a id="downloadBtn" href="" download class="modal-btn" target="_blank">📥 Download Image</a>
-        <button class="modal-btn" onclick="copyCode()">📋 Copy HTML Code</button>
-        <button class="modal-btn" onclick="copyUrl()">🔗 Copy Image URL</button>
+        <a id="downloadBtn" href="" download class="modal-btn" target="_blank">Download Image</a>
+        <button class="modal-btn" onclick="copyCode()">Copy HTML Code</button>
+        <button class="modal-btn" onclick="copyUrl()">Copy Image URL</button>
       </div>
     </div>
   </div>
 
   <script>
     // ==========================================
-    // INSERISCI QUI I TUOI STAMPINI!
-    // Basta aggiungere il nome del file tra virgolette.
+    // INSERISCI QUI I TUOI STAMPINI (formato stamp-X.png)
     // ==========================================
     const stampsList = [
-      "stampa-1.png",
-      "stampa-2.png"
-      // Es: quando avrai la terza, basterà aggiungere: ,"stampa-3.png"
+      "stamp-3.png"
+      "stamp-2.png"
+      "stamp-1.png",
+      // Aggiungi qui sotto le prossime, es: "stamp-3.png", "stamp-4.png", etc.
     ];
 
     const baseUrl = "https://seea-star.github.io/Cosmic-S-My-Stamps/";
@@ -262,11 +265,11 @@
 
       let itemDiv = document.createElement("div");
       itemDiv.className = "gallery-item";
-      itemDiv.onclick = () => openModal(fullImageUrl, `Stampa ${stampNum}`);
+      itemDiv.onclick = () => openModal(fullImageUrl, `Stamp ${stampNum}`);
 
       let img = document.createElement("img");
       img.src = fullImageUrl;
-      img.alt = `Stampa ${stampNum}`;
+      img.alt = `Stamp ${stampNum}`;
       img.className = "gallery-img";
 
       itemDiv.appendChild(img);
