@@ -155,7 +155,6 @@
       align-items: center;
     }
 
-    /* Immagine nel popup senza bordo e senza ombre */
     .modal-left img {
       max-width: 100%;
       max-height: 250px;
@@ -220,15 +219,8 @@
     </header>
 
     <div class="gallery-scroll-area">
-      <div class="gallery-grid" id="stampsGrid">
-        <!-- Esempi con la nuova nomenclatura: stampa-1, stampa-2, ecc. -->
-        <div class="gallery-item" onclick="openModal('./stampa-1.png', 'Stampa 1')">
-          <img src="./stampa-1.png" alt="Stampa 1" class="gallery-img">
-        </div>
-        <div class="gallery-item" onclick="openModal('./stampa-2.png', 'Stampa 2')">
-          <img src="./stampa-2.png" alt="Stampa 2" class="gallery-img">
-        </div>
-      </div>
+      <!-- La griglia si riempie automaticamente da sola tramite JavaScript -->
+      <div class="gallery-grid" id="stampsGrid"></div>
     </div>
 
   </div>
@@ -250,10 +242,41 @@
   </div>
 
   <script>
+    // ==========================================
+    // INSERISCI QUI I TUOI STAMPINI!
+    // Basta aggiungere il nome del file tra virgolette.
+    // ==========================================
+    const stampsList = [
+      "stampa-1.png",
+      "stampa-2.png"
+      // Es: quando avrai la terza, basterà aggiungere: ,"stampa-3.png"
+    ];
+
+    const baseUrl = "https://seea-star.github.io/Cosmic-S-My-Stamps/";
+    const gridContainer = document.getElementById("stampsGrid");
+
+    // Genera automaticamente i timbrini nella pagina
+    stampsList.forEach((fileName, index) => {
+      let stampNum = index + 1;
+      let fullImageUrl = baseUrl + fileName;
+
+      let itemDiv = document.createElement("div");
+      itemDiv.className = "gallery-item";
+      itemDiv.onclick = () => openModal(fullImageUrl, `Stampa ${stampNum}`);
+
+      let img = document.createElement("img");
+      img.src = fullImageUrl;
+      img.alt = `Stampa ${stampNum}`;
+      img.className = "gallery-img";
+
+      itemDiv.appendChild(img);
+      gridContainer.appendChild(itemDiv);
+    });
+
     let currentImgSrc = "";
 
     function openModal(imgSrc, imgTitle) {
-      currentImgSrc = window.location.origin + imgSrc.substring(1);
+      currentImgSrc = imgSrc;
       document.getElementById('modalImg').src = imgSrc;
       document.getElementById('modalTitle').innerText = imgTitle;
       document.getElementById('downloadBtn').href = imgSrc;
@@ -269,7 +292,8 @@
     }
 
     function copyCode() {
-      let code = `<a href="https://seea-star.github.io/Cosmic-S-Home/"><img src="${currentImgSrc}" alt="Cosmic-S Stamp"></a>`;
+      let code = `<a href="https://cosmic-seea.neocities.org/" target="_blank">\n  <img src="${currentImgSrc}" alt="Stamp" style="border: none; box-shadow: none; display: block; max-width: 100%; height: auto;">\n</a>`;
+      
       navigator.clipboard.writeText(code).then(() => {
         alert("HTML code copied to clipboard!");
       });
