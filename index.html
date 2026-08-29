@@ -173,11 +173,6 @@
       justify-content: center;
     }
 
-    .modal-right h3 {
-      font-size: 1.2rem;
-      font-weight: 800;
-    }
-
     .modal-btn {
       background: #F3EEDA;
       color: #111111;
@@ -234,10 +229,10 @@
         <img id="modalImg" src="" alt="Selected Stamp">
       </div>
       <div class="modal-right">
-        <h3 id="modalTitle">Stamp Details</h3>
+        <!-- Pulsanti riordinati e senza scritta del titolo -->
         <a id="downloadBtn" href="" download class="modal-btn" target="_blank">Download Image</a>
-        <button class="modal-btn" onclick="copyCode()">Copy HTML Code</button>
         <button class="modal-btn" onclick="copyUrl()">Copy Image URL</button>
+        <button class="modal-btn" onclick="copyCode()">Copy HTML Code</button>
       </div>
     </div>
   </div>
@@ -256,14 +251,12 @@
     stampsList.forEach((fileName, index) => {
       let stampNum = index + 1;
       
-      // Percorso relativo pulito e URL assoluto per il copia-incolla
       let relativePath = "./" + fileName;
       let absoluteUrl = "https://seea-star.github.io/Cosmic-S-My-Stamps/" + fileName;
 
       let itemDiv = document.createElement("div");
       itemDiv.className = "gallery-item";
-      // Passiamo l'URL assoluto alla modale così i link generati funzionano ovunque
-      itemDiv.onclick = () => openModal(absoluteUrl, relativePath, `Stamp ${stampNum}`);
+      itemDiv.onclick = () => openModal(absoluteUrl, relativePath);
 
       let img = document.createElement("img");
       img.src = relativePath;
@@ -276,10 +269,9 @@
 
     let currentImgSrc = "";
 
-    function openModal(imgSrc, imgPath, imgTitle) {
+    function openModal(imgSrc, imgPath) {
       currentImgSrc = imgSrc;
-      document.getElementById('modalImg').src = imgPath; // Usa il percorso locale per mostrare l'immagine nel popup
-      document.getElementById('modalTitle').innerText = imgTitle;
+      document.getElementById('modalImg').src = imgPath;
       document.getElementById('downloadBtn').href = imgPath;
       document.getElementById('stampModal').classList.add('active');
     }
@@ -292,17 +284,17 @@
       document.getElementById('stampModal').classList.remove('active');
     }
 
+    function copyUrl() {
+      navigator.clipboard.writeText(currentImgSrc).then(() => {
+        alert("Image URL copied to clipboard!");
+      });
+    }
+
     function copyCode() {
       let code = `<a href="https://cosmic-seea.neocities.org/" target="_blank">\n  <img src="${currentImgSrc}" alt="Stamp" style="border: none; box-shadow: none; display: block; max-width: 100%; height: auto;">\n</a>`;
       
       navigator.clipboard.writeText(code).then(() => {
         alert("HTML code copied to clipboard!");
-      });
-    }
-
-    function copyUrl() {
-      navigator.clipboard.writeText(currentImgSrc).then(() => {
-        alert("Image URL copied to clipboard!");
       });
     }
   </script>
