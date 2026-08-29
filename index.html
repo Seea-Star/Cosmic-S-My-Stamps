@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COSMIC-S - My Stamps</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: #f5f5f7;
+      background-image: 
+        linear-gradient(#e1e1e6 1px, transparent 1px),
+        linear-gradient(90deg, #e1e1e6 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: #111111;
+      font-family: 'Quicksand', sans-serif;
+      padding: 30px 10px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .site-wrapper {
+      max-width: 900px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .top-banner {
+      background: #111111;
+      border: 2px solid #111111;
+      border-radius: 20px;
+      padding: 12px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 4px 4px 0px #111111;
+    }
+
+    .top-banner h1 { 
+      font-size: 2rem; 
+      font-weight: 800; 
+      letter-spacing: 2px; 
+      color: #ffffff;
+    }
+
+    .gallery-scroll-area { 
+      max-height: 600px; 
+      overflow-y: auto; 
+      padding-right: 5px;
+    }
+
+    .gallery-scroll-area::-webkit-scrollbar {
+      width: 8px;
+    }
+    .gallery-scroll-area::-webkit-scrollbar-track {
+      background: #f0f0f3;
+      border-radius: 4px;
+    }
+    .gallery-scroll-area::-webkit-scrollbar-thumb {
+      background: #111111;
+      border-radius: 4px;
+    }
+
+    .gallery-grid {
+      column-count: 3;
+      column-gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .gallery-grid {
+        column-count: 1;
+      }
+    }
+
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .gallery-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 12px;
+      border: 2px solid #111111;
+      box-shadow: 3px 3px 0px #111111;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .gallery-item:hover .gallery-img {
+      transform: translateY(-3px);
+      box-shadow: 5px 5px 0px #111111;
+    }
+
+    /* Finestra Modale al click */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-box {
+      background: #ffffff;
+      border: 3px solid #111111;
+      border-radius: 20px;
+      padding: 25px;
+      max-width: 650px;
+      width: 100%;
+      display: flex;
+      gap: 25px;
+      box-shadow: 8px 8px 0px #111111;
+      position: relative;
+    }
+
+    @media (max-width: 600px) {
+      .modal-box {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    .modal-left {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-left img {
+      max-width: 100%;
+      max-height: 250px;
+      border-radius: 10px;
+      border: 2px solid #111111;
+    }
+
+    .modal-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .modal-right h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+
+    .modal-btn {
+      background: #F3EEDA;
+      color: #111111;
+      border: 2px solid #111111;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 0.75rem;
+      text-decoration: none;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px #111111;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+    }
+
+    .modal-btn:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0px #111111;
+      background: #fff;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body oncontextmenu="return false;">
+
+  <div class="site-wrapper">
+
+    <header class="top-banner">
+      <h1>MY STAMPS</h1>
+      <a href="https://seea-star.github.io/Cosmic-S-Home/" style="background:#F3EEDA; color:#111; border:2px solid #111; padding:8px 14px; border-radius:12px; font-weight:800; font-size:0.75rem; text-decoration:none; box-shadow:2px 2px 0px #111;">← HOME</a>
+    </header>
+
+    <div class="gallery-scroll-area">
+      <div class="gallery-grid" id="stampsGrid">
+        <!-- I timbrini vengono generati o inseriti qui -->
+        <div class="gallery-item" onclick="openModal('./1000075418.png', 'Crime Stamp 1')">
+          <img src="./1000075418.png" alt="Stamp" class="gallery-img">
+        </div>
+        <div class="gallery-item" onclick="openModal('./1000075417.png', 'Crime Stamp 2')">
+          <img src="./1000075417.png" alt="Stamp" class="gallery-img">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Finestra Modale (Popup) -->
+  <div class="modal-backdrop" id="stampModal" onclick="closeModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModalDirect()">×</button>
+      <div class="modal-left">
+        <img id="modalImg" src="" alt="Selected Stamp">
+      </div>
+      <div class="modal-right">
+        <h3 id="modalTitle">Stamp Details</h3>
+        <a id="downloadBtn" href="" download class="modal-btn" target="_blank">📥 Download Image</a>
+        <button class="modal-btn" onclick="copyCode()">📋 Copy HTML Code</button>
+        <button class="modal-btn" onclick="copyUrl()">🔗 Copy Image URL</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentImgSrc = "";
+
+    function openModal(imgSrc, imgTitle) {
+      currentImgSrc = window.location.origin + imgSrc.substring(1); // Gestione percorso
+      document.getElementById('modalImg').src = imgSrc;
+      document.getElementById('modalTitle').innerText = imgTitle;
+      document.getElementById('downloadBtn').href = imgSrc;
+      document.getElementById('stampModal').classList.add('active');
+    }
+
+    function closeModal(event) {
+      document.getElementById('stampModal').classList.remove('active');
+    }
+
+    function closeModalDirect() {
+      document.getElementById('stampModal').classList.remove('active');
+    }
+
+    function copyCode() {
+      let code = `<a href="https://seea-star.github.io/Cosmic-S-Home/"><img src="${currentImgSrc}" alt="Cosmic-S Stamp"></a>`;
+      navigator.clipboard.writeText(code).then(() => {
+        alert("HTML code copied to clipboard!");
+      });
+    }
+
+    function copyUrl() {
+      navigator.clipboard.writeText(currentImgSrc).then(() => {
+        alert("Image URL copied to clipboard!");
+      });
+    }
+  </script>
+
+</body>
+</html>
+
