@@ -69,13 +69,13 @@
       border-radius: 4px;
     }
 
-    /* Modalità Desktop: 5 colonne per farli più piccoli e vederne di più */
+    /* Modalità Desktop: 5 colonne */
     .gallery-grid {
       column-count: 5;
       column-gap: 15px;
     }
 
-    /* Modalità Telefono: 2 colonne affiancate */
+    /* Modalità Telefono: 2 colonne */
     @media (max-width: 768px) {
       .gallery-grid {
         column-count: 2;
@@ -92,7 +92,6 @@
       cursor: pointer;
     }
 
-    /* Immagini senza bordo e senza ombre */
     .gallery-img {
       width: 100%;
       height: auto;
@@ -222,7 +221,6 @@
     </header>
 
     <div class="gallery-scroll-area">
-      <!-- La griglia si riempie automaticamente tramite JavaScript -->
       <div class="gallery-grid" id="stampsGrid"></div>
     </div>
 
@@ -249,26 +247,26 @@
     // INSERISCI QUI I TUOI STAMPINI (formato stamp-X.png)
     // ==========================================
     const stampsList = [
-      "stamp-3.png"
-      "stamp-2.png"
       "stamp-1.png",
-      // Aggiungi qui sotto le prossime, es: "stamp-3.png", "stamp-4.png", etc.
+      "stamp-2.png"
     ];
 
-    const baseUrl = "https://seea-star.github.io/Cosmic-S-My-Stamps/";
     const gridContainer = document.getElementById("stampsGrid");
 
-    // Genera automaticamente i timbrini nella pagina
     stampsList.forEach((fileName, index) => {
       let stampNum = index + 1;
-      let fullImageUrl = baseUrl + fileName;
+      
+      // Percorso relativo pulito e URL assoluto per il copia-incolla
+      let relativePath = "./" + fileName;
+      let absoluteUrl = "https://seea-star.github.io/Cosmic-S-My-Stamps/" + fileName;
 
       let itemDiv = document.createElement("div");
       itemDiv.className = "gallery-item";
-      itemDiv.onclick = () => openModal(fullImageUrl, `Stamp ${stampNum}`);
+      // Passiamo l'URL assoluto alla modale così i link generati funzionano ovunque
+      itemDiv.onclick = () => openModal(absoluteUrl, relativePath, `Stamp ${stampNum}`);
 
       let img = document.createElement("img");
-      img.src = fullImageUrl;
+      img.src = relativePath;
       img.alt = `Stamp ${stampNum}`;
       img.className = "gallery-img";
 
@@ -278,11 +276,11 @@
 
     let currentImgSrc = "";
 
-    function openModal(imgSrc, imgTitle) {
+    function openModal(imgSrc, imgPath, imgTitle) {
       currentImgSrc = imgSrc;
-      document.getElementById('modalImg').src = imgSrc;
+      document.getElementById('modalImg').src = imgPath; // Usa il percorso locale per mostrare l'immagine nel popup
       document.getElementById('modalTitle').innerText = imgTitle;
-      document.getElementById('downloadBtn').href = imgSrc;
+      document.getElementById('downloadBtn').href = imgPath;
       document.getElementById('stampModal').classList.add('active');
     }
 
