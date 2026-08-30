@@ -51,7 +51,7 @@
       color: #ffffff;
     }
 
-    /* Nota descrittiva in alto */
+    /* Nota descrittiva in alto senza emoji */
     .stamps-note {
       background: #ffffff;
       border: 2px solid #111111;
@@ -267,16 +267,16 @@
       <a href="https://seea-star.github.io/Cosmic-S-Home/" style="background:#F3EEDA; color:#111; border:2px solid #111; padding:8px 14px; border-radius:12px; font-weight:800; font-size:0.75rem; text-decoration:none; box-shadow:2px 2px 0px #111;"><-HOME</a>
     </header>
 
-    <!-- Nota in alto -->
+    <!-- Nota in alto senza emoji -->
     <div class="stamps-note">
-      Feel free to take any stamps you like! You can use as many as you want, completely free. ✨
+      Feel free to take any stamps you like! You can use as many as you want, completely free.
     </div>
 
     <!-- Bottoni delle sezioni -->
     <div class="filter-buttons">
       <button class="filter-btn active" onclick="showSection('all', event)">ALL</button>
       <button class="filter-btn" onclick="showSection('personal', event)">MY STAMPS</button>
-      <button class="filter-btn" onclick="showSection('friends', event)">FRIENDS</button>
+      <button class="filter-btn" onclick="showSection('others', event)">OTHERS</button>
     </div>
 
     <div class="gallery-scroll-area">
@@ -291,9 +291,9 @@
         <div class="gallery-grid" id="grid-personal"></div>
       </div>
 
-      <!-- 3. SEZIONE FRIENDS (Timbri dedicati agli altri) -->
-      <div id="section-friends" class="stamp-section">
-        <div class="gallery-grid" id="grid-friends"></div>
+      <!-- 3. SEZIONE OTHERS (Timbri dedicati agli altri) -->
+      <div id="section-others" class="stamp-section">
+        <div class="gallery-grid" id="grid-others"></div>
       </div>
 
     </div>
@@ -320,18 +320,17 @@
     // CONFIGURAZIONE TIMBRI PER SEZIONE
     // ==========================================
     
-    // Inserisci qui i file dei tuoi timbri personali
+    // Tutti i timbri da 1 a 5 inseriti nella sezione personale
     const personalStamps = [
       "stamp-3.png",
       "stamp-1.png",
-      "stamp-5.png"
-    ];
-
-    // Inserisci qui i file dei timbri per gli amici (es. GlassGoose, Nova Star, ecc.)
-    const friendsStamps = [
+      "stamp-5.png",
       "stamp-4.png",
       "stamp-2.png"
     ];
+
+    // Sezione degli altri vuota per il momento
+    const othersStamps = [];
 
     // Funzione per generare le griglie automaticamente
     function populateGrid(containerId, list) {
@@ -358,8 +357,8 @@
 
     // Riempie le sezioni all'avvio
     populateGrid("grid-personal", personalStamps);
-    populateGrid("grid-friends", friendsStamps);
-    populateGrid("grid-all", [...personalStamps, ...friendsStamps]);
+    populateGrid("grid-others", othersStamps);
+    populateGrid("grid-all", [...personalStamps, ...othersStamps]);
 
     // Gestione cambio sezioni con i bottoni
     function showSection(sectionName, event) {
