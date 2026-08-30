@@ -51,6 +51,49 @@
       color: #ffffff;
     }
 
+    /* Nota descrittiva in alto */
+    .stamps-note {
+      background: #ffffff;
+      border: 2px solid #111111;
+      border-radius: 14px;
+      padding: 12px 18px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      box-shadow: 3px 3px 0px #111111;
+    }
+
+    /* Barra dei bottoni per le sezioni */
+    .filter-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: #ffffff;
+      color: #111111;
+      border: 2px solid #111111;
+      padding: 8px 16px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 0.75rem;
+      cursor: pointer;
+      box-shadow: 3px 3px 0px #111111;
+      transition: all 0.15s ease;
+    }
+
+    .filter-btn:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0px #111111;
+      background: #F3EEDA;
+    }
+
+    .filter-btn.active {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0px #111111;
+      background: #F3EEDA;
+    }
+
     .gallery-scroll-area { 
       max-height: 600px; 
       overflow-y: auto; 
@@ -67,6 +110,15 @@
     .gallery-scroll-area::-webkit-scrollbar-thumb {
       background: #111111;
       border-radius: 4px;
+    }
+
+    /* Gestione delle sezioni a comparsa */
+    .stamp-section {
+      display: none;
+    }
+
+    .stamp-section.active-section {
+      display: block;
     }
 
     /* Modalità Desktop: 5 colonne */
@@ -215,8 +267,35 @@
       <a href="https://seea-star.github.io/Cosmic-S-Home/" style="background:#F3EEDA; color:#111; border:2px solid #111; padding:8px 14px; border-radius:12px; font-weight:800; font-size:0.75rem; text-decoration:none; box-shadow:2px 2px 0px #111;"><-HOME</a>
     </header>
 
+    <!-- Nota in alto -->
+    <div class="stamps-note">
+      Feel free to take any stamps you like! You can use as many as you want, completely free. ✨
+    </div>
+
+    <!-- Bottoni delle sezioni -->
+    <div class="filter-buttons">
+      <button class="filter-btn active" onclick="showSection('all', event)">ALL</button>
+      <button class="filter-btn" onclick="showSection('personal', event)">MY STAMPS</button>
+      <button class="filter-btn" onclick="showSection('friends', event)">FRIENDS</button>
+    </div>
+
     <div class="gallery-scroll-area">
-      <div class="gallery-grid" id="stampsGrid"></div>
+      
+      <!-- 1. SEZIONE ALL (Tutti i timbri) -->
+      <div id="section-all" class="stamp-section active-section">
+        <div class="gallery-grid" id="grid-all"></div>
+      </div>
+
+      <!-- 2. SEZIONE MY STAMPS (I tuoi timbri personali) -->
+      <div id="section-personal" class="stamp-section">
+        <div class="gallery-grid" id="grid-personal"></div>
+      </div>
+
+      <!-- 3. SEZIONE FRIENDS (Timbri dedicati agli altri) -->
+      <div id="section-friends" class="stamp-section">
+        <div class="gallery-grid" id="grid-friends"></div>
+      </div>
+
     </div>
 
   </div>
@@ -229,7 +308,6 @@
         <img id="modalImg" src="" alt="Selected Stamp">
       </div>
       <div class="modal-right">
-        <!-- Pulsanti riordinati e senza scritta del titolo -->
         <a id="downloadBtn" href="" download class="modal-btn" target="_blank">Download Image</a>
         <button class="modal-btn" onclick="copyUrl()">Copy Image URL</button>
         <button class="modal-btn" onclick="copyCode()">Copy HTML Code</button>
@@ -239,36 +317,65 @@
 
   <script>
     // ==========================================
-    // INSERISCI QUI I TUOI STAMPINI (formato stamp-X.png)
+    // CONFIGURAZIONE TIMBRI PER SEZIONE
     // ==========================================
-    const stampsList = [
+    
+    // Inserisci qui i file dei tuoi timbri personali
+    const personalStamps = [
       "stamp-3.png",
       "stamp-1.png",
-      "stamp-5.png",
+      "stamp-5.png"
+    ];
+
+    // Inserisci qui i file dei timbri per gli amici (es. GlassGoose, Nova Star, ecc.)
+    const friendsStamps = [
       "stamp-4.png",
       "stamp-2.png"
     ];
 
-    const gridContainer = document.getElementById("stampsGrid");
-
-    stampsList.forEach((fileName, index) => {
-      let stampNum = index + 1;
+    // Funzione per generare le griglie automaticamente
+    function populateGrid(containerId, list) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = "";
       
-      let relativePath = "./" + fileName;
-      let absoluteUrl = "https://seea-star.github.io/Cosmic-S-My-Stamps/" + fileName;
+      list.forEach((fileName) => {
+        let relativePath = "./" + fileName;
+        let absoluteUrl = "https://seea-star.github.io/Cosmic-S-My-Stamps/" + fileName;
 
-      let itemDiv = document.createElement("div");
-      itemDiv.className = "gallery-item";
-      itemDiv.onclick = () => openModal(absoluteUrl, relativePath);
+        let itemDiv = document.createElement("div");
+        itemDiv.className = "gallery-item";
+        itemDiv.onclick = () => openModal(absoluteUrl, relativePath);
 
-      let img = document.createElement("img");
-      img.src = relativePath;
-      img.alt = `Stamp ${stampNum}`;
-      img.className = "gallery-img";
+        let img = document.createElement("img");
+        img.src = relativePath;
+        img.alt = "Stamp";
+        img.className = "gallery-img";
 
-      itemDiv.appendChild(img);
-      gridContainer.appendChild(itemDiv);
-    });
+        itemDiv.appendChild(img);
+        container.appendChild(itemDiv);
+      });
+    }
+
+    // Riempie le sezioni all'avvio
+    populateGrid("grid-personal", personalStamps);
+    populateGrid("grid-friends", friendsStamps);
+    populateGrid("grid-all", [...personalStamps, ...friendsStamps]);
+
+    // Gestione cambio sezioni con i bottoni
+    function showSection(sectionName, event) {
+      const sections = document.getElementsByClassName('stamp-section');
+      for (let sec of sections) {
+        sec.classList.remove('active-section');
+      }
+
+      const buttons = document.getElementsByClassName('filter-btn');
+      for (let btn of buttons) {
+        btn.classList.remove('active');
+      }
+
+      document.getElementById('section-' + sectionName).classList.add('active-section');
+      event.currentTarget.classList.add('active');
+    }
 
     let currentImgSrc = "";
 
