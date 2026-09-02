@@ -121,23 +121,34 @@
       display: block;
     }
 
-    /* Modalità Desktop: 5 colonne */
+    /* Modalità Desktop: 5 colonne con ordinamento verticale (dall'alto in basso, poi da sinistra a destra) */
     .gallery-grid {
       column-count: 5;
       column-gap: 15px;
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      height: 1200px; /* Altezza flessibile per la disposizione verticale */
+    }
+
+    /* Fallback per griglia standard se l'altezza fissa creasse problemi, ma flex-direction column con wrap simula l'ordine verticale */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
     }
 
     /* Modalità Telefono: 2 colonne */
     @media (max-width: 768px) {
       .gallery-grid {
-        column-count: 2;
-        column-gap: 10px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
       }
     }
 
     .gallery-item {
       break-inside: avoid;
-      margin-bottom: 15px;
+      margin-bottom: 0px;
       position: relative;
       overflow: hidden;
       border-radius: 10px;
@@ -267,31 +278,26 @@
       <a href="https://seea-star.github.io/Cosmic-S-Home/" style="background:#F3EEDA; color:#111; border:2px solid #111; padding:8px 14px; border-radius:12px; font-weight:800; font-size:0.75rem; text-decoration:none; box-shadow:2px 2px 0px #111;"><- HOME</a>
     </header>
 
-    <!-- Nota descrittiva in alto senza emoji -->
     <div class="stamps-note">
-      Feel free to take any stamps you like! You can use as many as you want, completely free.
+      Welcome to my stamp collection! Feel free to explore, collect your favorites, and decorate your own space with them.
     </div>
 
-    <!-- Bottoni delle sezioni -->
     <div class="filter-buttons">
       <button class="filter-btn active" onclick="showSection('all', event)">ALL</button>
-      <button class="filter-btn" onclick="showSection('personal', event)">MY STAMPS</button>
-      <button class="filter-btn" onclick="showSection('others', event)">OTHERS</button>
+      <button class="filter-btn" onclick="showSection('personal', event)">MY STYLE</button>
+      <button class="filter-btn" onclick="showSection('others', event)">OTHER SITES</button>
     </div>
 
     <div class="gallery-scroll-area">
       
-      <!-- 1. SEZIONE ALL (Tutti i timbri) -->
       <div id="section-all" class="stamp-section active-section">
         <div class="gallery-grid" id="grid-all"></div>
       </div>
 
-      <!-- 2. SEZIONE MY STAMPS (I tuoi timbri personali) -->
       <div id="section-personal" class="stamp-section">
         <div class="gallery-grid" id="grid-personal"></div>
       </div>
 
-      <!-- 3. SEZIONE OTHERS (Timbri dedicati agli altri) -->
       <div id="section-others" class="stamp-section">
         <div class="gallery-grid" id="grid-others"></div>
       </div>
@@ -300,7 +306,6 @@
 
   </div>
 
-  <!-- Finestra Modale (Popup) -->
   <div class="modal-backdrop" id="stampModal" onclick="closeModal(event)">
     <div class="modal-box" onclick="event.stopPropagation()">
       <button class="modal-close" onclick="closeModalDirect()">×</button>
@@ -308,14 +313,14 @@
         <img id="modalImg" src="" alt="Selected Stamp">
       </div>
       <div class="modal-right" id="modalRightContent">
-        <!-- Il contenuto dinamico (nome sito/link + bottoni) viene inserito qui via JavaScript -->
-      </div>
+        </div>
     </div>
   </div>
 
   <script>
     // ==========================================
     // CONFIGURAZIONE TIMBRI PER SEZIONE
+    // (I nuovi timbri sono messi per primi così appaiono in alto)
     // ==========================================
     
     // 1. I tuoi timbri personali (nel tuo stile)
@@ -366,10 +371,10 @@
       });
     }
 
-    // Riempie le sezioni all'avvio (ALL unisce automaticamente personal e others)
+    // Riempie le sezioni all'avvio (Mettendo othersStamps prima di personalStamps nella sezione ALL, i nuovi compaiono in alto)
     populateGrid("grid-personal", personalStamps);
     populateGrid("grid-others", othersStamps);
-    populateGrid("grid-all", [...personalStamps, ...othersStamps]);
+    populateGrid("grid-all", [...othersStamps, ...personalStamps]);
 
     // Gestione cambio sezioni con i bottoni
     function showSection(sectionName, event) {
