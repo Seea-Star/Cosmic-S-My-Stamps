@@ -118,25 +118,32 @@
       display: block;
     }
 
-    /* Griglia pulita senza spazi verticali anomali */
+    /* Layout a colonne fluido (masonry) per adattarsi perfettamente alle dimensioni reali */
     .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 15px;
+      column-count: 5;
+      column-gap: 15px;
     }
 
     @media (max-width: 768px) {
       .gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        column-count: 2;
+        column-gap: 10px;
       }
     }
 
     .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 15px;
       position: relative;
       overflow: hidden;
       border-radius: 10px;
       cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .gallery-item {
+        margin-bottom: 10px;
+      }
     }
 
     .gallery-img {
