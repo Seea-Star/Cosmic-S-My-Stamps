@@ -118,32 +118,26 @@
       display: block;
     }
 
-    /* Layout a colonne fluido (masonry) */
+    /* Griglia classica da sinistra a destra, riga per riga (stile quaderno) */
     .gallery-grid {
-      column-count: 5;
-      column-gap: 15px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
+      align-items: start;
     }
 
     @media (max-width: 768px) {
       .gallery-grid {
-        column-count: 2;
-        column-gap: 10px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
       }
     }
 
     .gallery-item {
-      break-inside: avoid;
-      margin-bottom: 15px;
       position: relative;
       overflow: hidden;
       border-radius: 10px;
       cursor: pointer;
-    }
-
-    @media (max-width: 768px) {
-      .gallery-item {
-        margin-bottom: 10px;
-      }
     }
 
     .gallery-img {
