@@ -118,38 +118,40 @@
       display: block;
     }
 
-    /* Griglia regolare riga per riga */
+    /* Layout a colonne fluido (masonry) per eliminare i riquadri forzati e gli spazi vuoti */
     .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 15px;
+      column-count: 5;
+      column-gap: 15px;
     }
 
     @media (max-width: 768px) {
       .gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        column-count: 2;
+        column-gap: 10px;
       }
     }
 
     .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 15px;
       position: relative;
       overflow: hidden;
-      border-radius: 10px;
       cursor: pointer;
-      aspect-ratio: 1 / 1; /* Forza tutte le tessere a essere perfettamente quadrate e uniformi */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #ffffff; /* Sfondo di sicurezza se l'immagine è trasparente */
-      border: 1px solid #e1e1e6;
+    }
+
+    @media (max-width: 768px) {
+      .gallery-item {
+        margin-bottom: 10px;
+      }
     }
 
     .gallery-img {
       width: 100%;
-      height: 100%;
-      object-fit: contain; /* Adatta l'immagine mantenendo le proporzioni senza tagliarla o deformarla */
+      height: auto;
       display: block;
+      border: none;
+      box-shadow: none;
+      background: transparent;
       transition: transform 0.2s ease, opacity 0.2s ease;
       opacity: 0.9;
     }
