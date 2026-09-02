@@ -118,18 +118,11 @@
       display: block;
     }
 
-    /* Griglia regolare riga per riga (da sinistra a destra) */
+    /* Layout a griglia flessibile (Flexbox wrap) per compattare gli elementi senza buchi o spazi vuoti tra le altezze */
     .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 15px;
-    }
-
-    @media (max-width: 768px) {
-      .gallery-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-      }
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
     .gallery-item {
@@ -137,15 +130,14 @@
       overflow: hidden;
       border-radius: 10px;
       cursor: pointer;
-      /* Niente sfondi bianchi o aspect-ratio forzati: le immagini mantengono la trasparenza e le forme originali */
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .gallery-img {
-      width: 100%;
-      height: auto;
+      height: 75px; /* Altezza di base comune per far scorrere i timbri fluidamente in orizzontale */
+      width: auto;
       display: block;
       border: none;
       box-shadow: none;
@@ -406,7 +398,7 @@
         rightContent.appendChild(siteLink);
       }
 
-    let downloadBtn = document.createElement("a");
+      let downloadBtn = document.createElement("a");
       downloadBtn.id = "downloadBtn";
       downloadBtn.href = imgPath;
       downloadBtn.download = "";
@@ -436,6 +428,7 @@
 
     function closeModalDirect() {
       document.getElementById('stampModal').classList.remove('active');
+
     }
 
     function copyUrl() {
