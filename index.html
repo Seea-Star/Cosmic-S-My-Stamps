@@ -267,7 +267,7 @@
       <a href="https://seea-star.github.io/Cosmic-S-Home/" style="background:#F3EEDA; color:#111; border:2px solid #111; padding:8px 14px; border-radius:12px; font-weight:800; font-size:0.75rem; text-decoration:none; box-shadow:2px 2px 0px #111;"><- HOME</a>
     </header>
 
-    <!-- Nota in alto senza emoji -->
+    <!-- Nota descrittiva in alto senza emoji -->
     <div class="stamps-note">
       Feel free to take any stamps you like! You can use as many as you want, completely free.
     </div>
@@ -307,10 +307,8 @@
       <div class="modal-left">
         <img id="modalImg" src="" alt="Selected Stamp">
       </div>
-      <div class="modal-right">
-        <a id="downloadBtn" href="" download class="modal-btn" target="_blank">Download Image</a>
-        <button class="modal-btn" onclick="copyUrl()">Copy Image URL</button>
-        <button class="modal-btn" onclick="copyCode()">Copy HTML Code</button>
+      <div class="modal-right" id="modalRightContent">
+        <!-- Il contenuto dinamico (nome sito/link + bottoni) viene inserito qui via JavaScript -->
       </div>
     </div>
   </div>
@@ -320,7 +318,7 @@
     // CONFIGURAZIONE TIMBRI PER SEZIONE
     // ==========================================
     
-    // Tutti i timbri da 1 a 5 inseriti nella sezione personale
+    // 1. I tuoi timbri personali (nel tuo stile)
     const personalStamps = [
       "stamp-5.png",
       "stamp-2.png",
@@ -331,8 +329,19 @@
       "stamp-6.png"
     ];
 
-    // Sezione degli altri vuota per il momento
-    const othersStamps = [];
+    // 2. Timbri dedicati agli altri (ispirati ai siti altrui / compleanni)
+    const othersStamps = [
+      "stamp-9.png",
+      "stamp-10.png",
+      "stamp-11.png"
+    ];
+
+    // Informazioni extra per i timbri dedicati agli altri (Nome e Link del sito)
+    const stampMetadata = {
+      "stamp-9.png": { name: "GlassGoose", url: "https://glassgoose.neocities.org/" },
+      "stamp-10.png": { name: "GlassGoose", url: "https://glassgoose.neocities.org/" },
+      "stamp-11.png": { name: "GlassGoose", url: "https://glassgoose.neocities.org/" }
+    };
 
     // Funzione per generare le griglie automaticamente
     function populateGrid(containerId, list) {
@@ -345,7 +354,7 @@
 
         let itemDiv = document.createElement("div");
         itemDiv.className = "gallery-item";
-        itemDiv.onclick = () => openModal(absoluteUrl, relativePath);
+        itemDiv.onclick = () => openModal(absoluteUrl, relativePath, fileName);
 
         let img = document.createElement("img");
         img.src = relativePath;
@@ -357,7 +366,7 @@
       });
     }
 
-    // Riempie le sezioni all'avvio
+    // Riempie le sezioni all'avvio (ALL unisce automaticamente personal e others)
     populateGrid("grid-personal", personalStamps);
     populateGrid("grid-others", othersStamps);
     populateGrid("grid-all", [...personalStamps, ...othersStamps]);
@@ -380,10 +389,47 @@
 
     let currentImgSrc = "";
 
-    function openModal(imgSrc, imgPath) {
+    function openModal(imgSrc, imgPath, fileName) {
       currentImgSrc = imgSrc;
       document.getElementById('modalImg').src = imgPath;
-      document.getElementById('downloadBtn').href = imgPath;
+      
+      let rightContent = document.getElementById('modalRightContent');
+      rightContent.innerHTML = "";
+
+      // Se il timbro appartiene a "others" ed ha metadati (nome/sito), aggiunge il link sopra il download
+      if (stampMetadata[fileName]) {
+        let meta = stampMetadata[fileName];
+        let siteLink = document.createElement("a");
+        siteLink.href = meta.url;
+        siteLink.target = "_blank";
+        siteLink.className = "modal-btn";
+        siteLink.style.background = "#ffffff";
+        siteLink.innerText = meta.name;
+        rightContent.appendChild(siteLink);
+      }
+
+      // Ricrea i bottoni standard di download e copia
+      let downloadBtn = document.createElement("a");
+      downloadBtn.id = "downloadBtn";
+      downloadBtn.href = imgPath;
+      downloadBtn.download = "";
+      downloadBtn.className = "modal-btn";
+      downloadBtn.target = "_blank";
+      downloadBtn.innerText = "Download Image";
+      rightContent.appendChild(downloadBtn);
+
+      let copyUrlBtn = document.createElement("button");
+      copyUrlBtn.className = "modal-btn";
+      copyUrlBtn.onclick = copyUrl;
+      copyUrlBtn.innerText = "Copy Image URL";
+      rightContent.appendChild(copyUrlBtn);
+
+      let copyCodeBtn = document.createElement("button");
+      copyCodeBtn.className = "modal-btn";
+      copyCodeBtn.onclick = copyCode;
+      copyCodeBtn.innerText = "Copy HTML Code";
+      rightContent.appendChild(copyCodeBtn);
+
       document.getElementById('stampModal').classList.add('active');
     }
 
