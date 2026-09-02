@@ -51,7 +51,6 @@
       color: #ffffff;
     }
 
-    /* Nota descrittiva in alto senza emoji */
     .stamps-note {
       background: #ffffff;
       border: 2px solid #111111;
@@ -62,7 +61,6 @@
       box-shadow: 3px 3px 0px #111111;
     }
 
-    /* Barra dei bottoni per le sezioni */
     .filter-buttons {
       display: flex;
       gap: 10px;
@@ -112,7 +110,6 @@
       border-radius: 4px;
     }
 
-    /* Gestione delle sezioni a comparsa */
     .stamp-section {
       display: none;
     }
@@ -121,24 +118,13 @@
       display: block;
     }
 
-    /* Modalità Desktop: 5 colonne con ordinamento verticale (dall'alto in basso, poi da sinistra a destra) */
-    .gallery-grid {
-      column-count: 5;
-      column-gap: 15px;
-      display: flex;
-      flex-direction: column;
-      flex-wrap: wrap;
-      height: 1200px; /* Altezza flessibile per la disposizione verticale */
-    }
-
-    /* Fallback per griglia standard se l'altezza fissa creasse problemi, ma flex-direction column con wrap simula l'ordine verticale */
+    /* Griglia pulita senza spazi verticali anomali */
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 15px;
     }
 
-    /* Modalità Telefono: 2 colonne */
     @media (max-width: 768px) {
       .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -147,8 +133,6 @@
     }
 
     .gallery-item {
-      break-inside: avoid;
-      margin-bottom: 0px;
       position: relative;
       overflow: hidden;
       border-radius: 10px;
@@ -170,7 +154,6 @@
       opacity: 1;
     }
 
-    /* Finestra Modale al click */
     .modal-backdrop {
       position: fixed;
       top: 0;
@@ -312,18 +295,11 @@
       <div class="modal-left">
         <img id="modalImg" src="" alt="Selected Stamp">
       </div>
-      <div class="modal-right" id="modalRightContent">
-        </div>
+      <div class="modal-right" id="modalRightContent"></div>
     </div>
   </div>
 
   <script>
-    // ==========================================
-    // CONFIGURAZIONE TIMBRI PER SEZIONE
-    // (I nuovi timbri sono messi per primi così appaiono in alto)
-    // ==========================================
-    
-    // 1. I tuoi timbri personali (nel tuo stile)
     const personalStamps = [
       "stamp-5.png",
       "stamp-2.png",
@@ -334,21 +310,18 @@
       "stamp-6.png"
     ];
 
-    // 2. Timbri dedicati agli altri (ispirati ai siti altrui / compleanni)
     const othersStamps = [
       "stamp-9.png",
       "stamp-10.png",
       "stamp-11.png"
     ];
 
-    // Informazioni extra per i timbri dedicati agli altri (Nome e Link del sito)
     const stampMetadata = {
       "stamp-9.png": { name: "GlassGoose", url: "https://glassgoose.neocities.org/" },
       "stamp-10.png": { name: "GlassGoose", url: "https://glassgoose.neocities.org/" },
       "stamp-11.png": { name: "GlassGoose", url: "https://glassgoose.neocities.org/" }
     };
 
-    // Funzione per generare le griglie automaticamente
     function populateGrid(containerId, list) {
       const container = document.getElementById(containerId);
       container.innerHTML = "";
@@ -371,12 +344,10 @@
       });
     }
 
-    // Riempie le sezioni all'avvio (Mettendo othersStamps prima di personalStamps nella sezione ALL, i nuovi compaiono in alto)
     populateGrid("grid-personal", personalStamps);
     populateGrid("grid-others", othersStamps);
     populateGrid("grid-all", [...othersStamps, ...personalStamps]);
 
-    // Gestione cambio sezioni con i bottoni
     function showSection(sectionName, event) {
       const sections = document.getElementsByClassName('stamp-section');
       for (let sec of sections) {
@@ -401,7 +372,6 @@
       let rightContent = document.getElementById('modalRightContent');
       rightContent.innerHTML = "";
 
-      // Se il timbro appartiene a "others" ed ha metadati (nome/sito), aggiunge il link sopra il download
       if (stampMetadata[fileName]) {
         let meta = stampMetadata[fileName];
         let siteLink = document.createElement("a");
@@ -413,7 +383,6 @@
         rightContent.appendChild(siteLink);
       }
 
-      // Ricrea i bottoni standard di download e copia
       let downloadBtn = document.createElement("a");
       downloadBtn.id = "downloadBtn";
       downloadBtn.href = imgPath;
