@@ -118,31 +118,29 @@
       display: block;
     }
 
-    /* Layout a colonne fluido (masonry) per eliminare i riquadri forzati e gli spazi vuoti */
+    /* Griglia regolare riga per riga (da sinistra a destra) */
     .gallery-grid {
-      column-count: 5;
-      column-gap: 15px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
     }
 
     @media (max-width: 768px) {
       .gallery-grid {
-        column-count: 2;
-        column-gap: 10px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
       }
     }
 
     .gallery-item {
-      break-inside: avoid;
-      margin-bottom: 15px;
       position: relative;
       overflow: hidden;
+      border-radius: 10px;
       cursor: pointer;
-    }
-
-    @media (max-width: 768px) {
-      .gallery-item {
-        margin-bottom: 10px;
-      }
+      /* Niente sfondi bianchi o aspect-ratio forzati: le immagini mantengono la trasparenza e le forme originali */
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .gallery-img {
@@ -408,7 +406,7 @@
         rightContent.appendChild(siteLink);
       }
 
-      let downloadBtn = document.createElement("a");
+    let downloadBtn = document.createElement("a");
       downloadBtn.id = "downloadBtn";
       downloadBtn.href = imgPath;
       downloadBtn.download = "";
@@ -457,3 +455,4 @@
 
 </body>
 </html>
+
