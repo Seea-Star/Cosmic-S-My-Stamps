@@ -118,7 +118,7 @@
       display: block;
     }
 
-    /* Layout a griglia regolare da sinistra a destra, riga per riga */
+    /* Griglia regolare riga per riga */
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -137,14 +137,19 @@
       overflow: hidden;
       border-radius: 10px;
       cursor: pointer;
+      aspect-ratio: 1 / 1; /* Forza tutte le tessere a essere perfettamente quadrate e uniformi */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff; /* Sfondo di sicurezza se l'immagine è trasparente */
+      border: 1px solid #e1e1e6;
     }
 
     .gallery-img {
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: contain; /* Adatta l'immagine mantenendo le proporzioni senza tagliarla o deformarla */
       display: block;
-      border: none;
-      box-shadow: none;
       transition: transform 0.2s ease, opacity 0.2s ease;
       opacity: 0.9;
     }
