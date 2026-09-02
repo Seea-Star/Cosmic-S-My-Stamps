@@ -118,26 +118,33 @@
       display: block;
     }
 
-    /* Layout a griglia flessibile (Flexbox wrap) per compattare gli elementi senza buchi o spazi vuoti tra le altezze */
+    /* Layout a Colonne / Masonry per evitare spazi vuoti verticali e far risalire i blocchi */
     .gallery-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
+      column-count: 5;
+      column-gap: 12px;
+    }
+
+    @media (max-width: 768px) {
+      .gallery-grid {
+        column-count: 2;
+      }
     }
 
     .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 12px;
       position: relative;
       overflow: hidden;
       border-radius: 10px;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: inline-block;
+      width: 100%;
+      text-align: center;
     }
 
     .gallery-img {
-      height: 75px; /* Altezza di base comune per far scorrere i timbri fluidamente in orizzontale */
-      width: auto;
+      width: 100%;
+      height: auto;
       display: block;
       border: none;
       box-shadow: none;
@@ -428,7 +435,6 @@
 
     function closeModalDirect() {
       document.getElementById('stampModal').classList.remove('active');
-
     }
 
     function copyUrl() {
